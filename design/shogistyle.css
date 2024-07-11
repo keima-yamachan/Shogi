@@ -1,0 +1,64 @@
+body {
+    width: 100%;
+    max-width: 450px;
+    margin: 0 auto;
+    touch-action: manipulation;
+}
+.shogiboard {
+    width: 100%;
+    -ms-user-select: none;
+    -webkit-user-select: none;
+    user-select: none;
+}
+#board {
+    width: 100%;
+    height: auto;
+}
+.control-area {
+    padding: 0;
+    text-align: center;
+}
+ul.control-buttons li {
+    font-size: 0;
+    display: inline;
+    list-style: none;
+    margin: 5px;
+    padding: 24px 34px;
+    border: solid 2px #000000;
+    border-radius: 3px;
+    transition: .4s;
+    cursor: pointer;
+    -ms-user-select: none;
+    -webkit-user-select: none;
+    user-select: none;
+}
+ul.control-buttons li:hover {
+    background: #3d3d3d;
+    color: #fff;
+}
+ul.control-buttons li span {
+    display: block;
+}
+
+
+.ref {
+    display: block;
+    border: 2px dotted #000000;
+    border-radius: 5px;
+}
+
+/*@media screen and (min-width: 970px) {
+    ul.control-buttons li {
+        font-size: 47.5px;
+    }
+}
+@media screen and (max-width: 970px) {
+    ul.control-buttons li {
+        font-size: 5vw;
+    }
+}
+@media screen and (max-width: 750px) {
+    ul.control-buttons li {
+        font-size: 6vw;
+    }
+}*/
