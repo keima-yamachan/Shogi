@@ -281,35 +281,3 @@ main h2.senpou {
 		font-size: 5.2vw;
 	}
 }
-
-/* =====toppage===== */
-#categorymenu {
-	width: 80%;
-	margin: 15px auto;
-	font-size: 20px;
-}
-#categorymenu li {
-	margin-bottom: 15px;
-	background: url('top-menu-bg.png') no-repeat;
-}
-#categorymenu li a {
-	display: block;
-	padding: 15px 9px;
-	color: #fff;
-	text-decoration: none;
-}
-#categorymenu li.tesuji a { background: rgba(215, 20, 20, 0.5); }
-#categorymenu li.jyoseki a { background: rgba(125, 20, 212, 0.5); }
-#categorymenu li.tume a { background: rgba(212, 142, 20, 0.5); }
-#categorymenu li.kifu a { background: rgba(20, 25, 212, 0.5); }
-
-#categorymenu li:hover {
-	background-image: url('top-menu-bg-lit.png');
-}
-#categorymenu li a span {
-	display: block;
-	width: 50%;
-	margin: 0 auto;
-	text-align: justify;
-	text-align-last: justify;
-}
