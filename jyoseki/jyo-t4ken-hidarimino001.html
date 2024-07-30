@@ -5,23 +5,26 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 	<script src="../design/jQuery-3.7.0.min.js" type="text/javascript"></script>
 	<script src="../design/snap.svg.js" type="text/javascript"></script>
-	<script src="../design/kifPlayer.js" type="text/javascript"></script>
+	<script src="../design/kifPlayer1.1.js" type="text/javascript"></script>
+	<script src="../design/default.js" type="text/javascript"></script>
 	<link href="../design/shogistyle.css" rel="stylesheet">
 	<title>５７銀右型左美濃</title>
 </head>
 <body>
 	<header>
 		<div class="hd_in"><a class="ttl" href="../">
-			<h1>山ちゃんの居飛車研究部屋</h1>
+			<h1>虹追いの居飛車研究部屋</h1>
 		</a></div>
 		<nav id="grovalnavi">
 			<ul class="all">
-				<li><a href="../">トップへ</a></li>
+				<li><a href="/">トップへ</a></li>
 				<li>
 					<h2 class="h-menu-list">メニュー</h2>
 					<ul class="h-menu">
-						<li><a href="#">定跡</a></li>
+						<li><a href="../tesuji/">手筋紹介</a></li>
+						<li><a href="../jyoseki/">定跡研究</a></li>
 						<li><a href="../tume/">詰将棋</a></li>
+						<li><a href="../kifu/">実戦譜など</a></li>
 					</ul>
 				</li>
 			</ul>
@@ -29,9 +32,18 @@
 	</header>
 	<div id="playarea">
 		<data id="kif" class="shogiboard" value="">
-			<svg id="board" xmlns="http://www.w3.org/2000/svg" width="450" height="570" viewBox="0, 0, 450, 570"></svg>
+			<svg class="shogiban-okiba" xmlns="http://www.w3.org/2000/svg" width="450" height="570" viewBox="0, 0, 450, 570"></svg>
 			<script type="kif">
 				jyo-t4ken-hidarimino001.kif
+			</script>
+		</data>
+	</div>
+
+	<div id="playarea">
+		<data id="kif" class="shogiboard" value="">
+			<svg class="shogiban-okiba" xmlns="http://www.w3.org/2000/svg" width="450" height="570" viewBox="0, 0, 450, 570"></svg>
+			<script type="kif">
+				jyo-t4ken-hidarimino002.kif
 			</script>
 		</data>
 	</div>
