@@ -1,6 +1,6 @@
-$(function(){
-	$('.h-menu').hide();
-	$('.h-menu-list').click(function(){
-		$(this).next('.h-menu').slideToggle(50);
+jQuery(function(){
+	jQuery('.h-menu').hide();
+	jQuery('.h-menu-list').click(function(){
+		jQuery(this).next('.h-menu').slideToggle(50);
 	});
 });
