@@ -35,8 +35,8 @@ class 将棋タイム extends HTMLElement{
     }
 
 
-    $shogiban_click(event){
-        const {left, width} = this.$shogiban.getBoundingClientRect()
+    $将棋盤_click(event){
+        const {left, width} = this.$将棋盤.getBoundingClientRect()
         event.clientX < left+width/2 ? this.$前に移動ボタン.click() : this.$次に移動ボタン.click()
     }
 
@@ -148,15 +148,15 @@ class 将棋タイム extends HTMLElement{
             this.$指し手選択.innerHTML = this.描画_指し手選択()
         }
 
-        //shogibanの駒
-        this.$shogiban.innerHTML = this.描画_shogiban(局面, 反転)
+        //将棋盤の駒
+        this.$将棋盤.innerHTML = this.描画_将棋盤(局面, 反転)
 
         //マスハイライト
         if(this.最終手){
-            this.$shogiban.insertAdjacentHTML('beforeend', this.描画_ハイライト(this.最終手[0], this.最終手[1], 反転))
+            this.$将棋盤.insertAdjacentHTML('beforeend', this.描画_ハイライト(this.最終手[0], this.最終手[1], 反転))
         }
         else if(手数 !== 0){
-            this.$shogiban.insertAdjacentHTML('beforeend', this.描画_ハイライト(指し手.後X, 指し手.後Y, 反転))
+            this.$将棋盤.insertAdjacentHTML('beforeend', this.描画_ハイライト(指し手.後X, 指し手.後Y, 反転))
         }
 
         //持駒
@@ -201,7 +201,7 @@ class 将棋タイム extends HTMLElement{
     }
 
 
-    描画_shogiban(局面, 反転){
+    描画_将棋盤(局面, 反転){
         let html = ''
 
         for(let y in 局面.駒){
@@ -352,7 +352,7 @@ class 将棋タイム extends HTMLElement{
             display: none;
         }
 
-        #kyokumen{
+        #局面{
             display: flex;
         }
 
@@ -396,7 +396,7 @@ class 将棋タイム extends HTMLElement{
             display: none;
         }
 
-        #shogiban{
+        #将棋盤{
             width: 410px;
             height: 454px;
             background-image: var(--マス), var(--盤);
@@ -404,7 +404,7 @@ class 将棋タイム extends HTMLElement{
             margin: 0 3px;
             -webkit-tap-highlight-color: transparent;
         }
-        :host([data-reverse]) #shogiban{
+        :host([data-reverse]) #将棋盤{
             background-image: var(--マス_), var(--盤);
         }
 
@@ -744,7 +744,7 @@ class 将棋タイム extends HTMLElement{
         </style>
         <div id="将棋タイム">
           <div id="後手名"></div>
-          <div id="kyokumen">
+          <div id="局面">
             <div id="後手駒台">
               <div id="後手駒台_歩" data-num="0" data-koma="歩_"></div>
               <div id="後手駒台_香" data-num="0" data-koma="香_"></div>
@@ -754,7 +754,7 @@ class 将棋タイム extends HTMLElement{
               <div id="後手駒台_角" data-num="0" data-koma="角_"></div>
               <div id="後手駒台_飛" data-num="0" data-koma="飛_"></div>
             </div>
-            <div id="shogiban"></div>
+            <div id="将棋盤"></div>
             <div id="先手駒台">
               <div id="先手駒台_飛" data-num="0" data-koma="飛"></div>
               <div id="先手駒台_角" data-num="0" data-koma="角"></div>
