@@ -207,10 +207,8 @@ class 将棋部屋 extends HTMLElement{
                 if(局面.駒[y][x]){
                     html += this.描画_駒(局面.駒[y][x], x, y, 反転)
                 }
-                else {
-                    return `<div class="空マス">test1</div>`
-                }
             }
+            html += `<div class="空マス">test1</div>`
         }
 
         return html
@@ -237,7 +235,7 @@ class 将棋部屋 extends HTMLElement{
             y = 10 - y
         }
 
-        return `<div class="空マス"><div id="最終手" data-x="${x}" data-y="${y}"></div></div>`
+        return `<div class="空マス"><div id="最終手" data-x="${x}" data-y="${y}">test3</div></div>`
     }
 
 
