@@ -352,7 +352,7 @@ class 将棋タイム extends HTMLElement{
             display: none;
         }
 
-        #局面{
+        #kyokumen{
             display: flex;
         }
 
@@ -744,7 +744,7 @@ class 将棋タイム extends HTMLElement{
         </style>
         <div id="将棋タイム">
           <div id="後手名"></div>
-          <div id="局面">
+          <div id="kyokumen">
             <div id="後手駒台">
               <div id="後手駒台_歩" data-num="0" data-koma="歩_"></div>
               <div id="後手駒台_香" data-num="0" data-koma="香_"></div>
