@@ -33,20 +33,20 @@ class shogiBeya extends HTMLElement{
     }
 
 
-    $shogiban_click(event){
-        const {left, width} = this.$shogiban.getBoundingClientRect()
-        event.clientX < left+width/2 ? this.$btn-maehe.click() : this.$btn-tsugihe.click()
+    $shogiBan_click(event){
+        const {left, width} = this.$shogiBan.getBoundingClientRect()
+        event.clientX < left+width/2 ? this.$btnMaehe.click() : this.$btnTsugihe.click()
     }
 
 
-    $btn-hajime_click(event){
+    $btnHajime_click(event){
         this.手数 = 0
         this.変化 = 0
         this.描画(true)
     }
 
 
-    $btn-maehe_click(event){
+    $btnMaehe_click(event){
         if(this.$sashiteSentaku.selectedIndex > this.総手数){
             this.$sashiteSentaku.selectedIndex = this.$sashiteSentaku.length - 2
         }
@@ -56,7 +56,7 @@ class shogiBeya extends HTMLElement{
     }
 
 
-    $btn-tsugihe_click(event){
+    $btnTsugihe_click(event){
         const 総手数 = this.全指し手[this.変化].length - 1
 
         if(this.手数 < 総手数){
@@ -69,7 +69,7 @@ class shogiBeya extends HTMLElement{
     }
 
 
-    $btn-owari_click(event){
+    $btnSaigohe_click(event){
         this.go(this.全指し手[this.変化].length - 1)
         this.$sashiteSentaku.selectedIndex = this.$sashiteSentaku.length - 1
     }
@@ -77,7 +77,7 @@ class shogiBeya extends HTMLElement{
 
     $sashiteSentaku_change(event){
         if(this.$sashiteSentaku.selectedIndex > this.総手数){
-            this.$btn-owari.click()
+            this.$btnSaigohe.click()
         }
         else{
             this.go(this.$sashiteSentaku.selectedIndex)
@@ -85,28 +85,28 @@ class shogiBeya extends HTMLElement{
     }
 
 
-    $反転ボタン_click(event){
+    $btnHanten_click(event){
         this.reverse = !this.reverse
         this.描画(true)
     }
 
 
-    $ダイアログボタン_click(event){
+    $btnDialog_click(event){
         this.toggleAttribute('data-dialog')
     }
 
 
-    $ダイアログ_閉じるボタン_click(event){
+    $btnDialogClose_click(event){
         this.removeAttribute('data-dialog')
     }
 
 
-    $ダイアログ_棋譜コピーボタン_click(event){
+    $btnCopyKifu_click(event){
         navigator.clipboard.writeText(this.kif)
     }
 
 
-    $変化選択_click(event){
+    $changeSelection_click(event){
         event.stopPropagation()
         if(!event.target.hasAttribute('data-fork')){
             return
@@ -116,7 +116,7 @@ class shogiBeya extends HTMLElement{
         this.手数--
 
         this.$sashiteSentaku.innerHTML = this.描画_sashiteSentaku()
-        this.$btn-tsugihe.click()
+        this.$btnTsugihe.click()
     }
 
 
@@ -146,15 +146,15 @@ class shogiBeya extends HTMLElement{
             this.$sashiteSentaku.innerHTML = this.描画_sashiteSentaku()
         }
 
-        //shogibanの駒
-        this.$shogiban.innerHTML = this.描画_shogiban(局面, 反転)
+        //shogiBanの駒
+        this.$shogiBan.innerHTML = this.描画_shogiBan(局面, 反転)
 
         //マスハイライト
         if(this.最終手){
-            this.$shogiban.insertAdjacentHTML('beforeend', this.描画_ハイライト(this.最終手[0], this.最終手[1], 反転))
+            this.$shogiBan.insertAdjacentHTML('beforeend', this.描画_ハイライト(this.最終手[0], this.最終手[1], 反転))
         }
         else if(手数 !== 0){
-            this.$shogiban.insertAdjacentHTML('beforeend', this.描画_ハイライト(指し手.後X, 指し手.後Y, 反転))
+            this.$shogiBan.insertAdjacentHTML('beforeend', this.描画_ハイライト(指し手.後X, 指し手.後Y, 反転))
         }
 
         //持駒
@@ -178,8 +178,8 @@ class shogiBeya extends HTMLElement{
             this.$グラフ.更新(手数, this.評価値[手数], this.読み筋[手数])
         }
 
-        //変化選択
-        this.$変化選択.innerHTML = (!this.変化 && this.全指し手.変化手数.includes(手数)) || (this.変化 && 手数 === this.変化手数) ? this.描画_変化選択() : ''
+        //changeSelection
+        this.$changeSelection.innerHTML = (!this.変化 && this.全指し手.変化手数.includes(手数)) || (this.変化 && 手数 === this.変化手数) ? this.描画_changeSelection() : ''
     }
 
 
@@ -199,7 +199,7 @@ class shogiBeya extends HTMLElement{
     }
 
 
-    描画_shogiban(局面, 反転){
+    描画_shogiBan(局面, 反転){
         let html = ''
 
         for(let y in 局面.駒){
@@ -238,7 +238,7 @@ class shogiBeya extends HTMLElement{
     }
 
 
-    描画_変化選択(){
+    描画_changeSelection(){
         let html = ''
 
         for(const [i, v] of this.全指し手.変化手数.entries()){
@@ -289,13 +289,13 @@ class shogiBeya extends HTMLElement{
             position: relative;
             font-family: "Noto Sans CJK JP", meiryo, sans-serif;
 
-            --btn-hajime: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMjgiIGhlaWdodD0iMTI4IiB2aWV3Qm94PSIwIDAgMTI4IDEyOCI+DQo8cGF0aCBkPSJNMjksMkgxN2MtMy4zLDAtNiwyLjctNiw2djExMmMwLDMuMywyLjcsNiw2LDZoMTJjMy4zLDAsNi0yLjcsNi02VjhDMzUsNC43LDMyLjMsMiwyOSwyeiIvPg0KPHBhdGggZD0iTTExNywxMjBWOGMwLTUuMy02LjYtOC0xMC40LTQuMmwtNTYuMSw1NmMtMi4zLDIuMy0yLjQsNi4xLDAsOC40bDU2LjIsNTZDMTEwLjQsMTI4LDExNywxMjUuMywxMTcsMTIweiIvPg0KPC9zdmc+");
-            --btn-maehe: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMjgiIGhlaWdodD0iMTI4IiB2aWV3Qm94PSIwIDAgMTI4IDEyOCI+DQo8cGF0aCBkPSJNODcuOCwzLjhsLTU2LDU2Yy0yLjMsMi4zLTIuMyw2LjEsMCw4LjRsNTYsNTZDOTEuNiwxMjgsOTgsMTI1LjMsOTgsMTIwVjhDOTgsMi43LDkxLjYsMCw4Ny44LDMuOHoiLz4NCjwvc3ZnPg0K");
-            --btn-tsugihe: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMjgiIGhlaWdodD0iMTI4IiB2aWV3Qm94PSIwIDAgMTI4IDEyOCI+DQo8cGF0aCBkPSJNNDAuMiwzLjhDMzYuNCwwLDMwLDIuNywzMCw4djExMmMwLDUuMyw2LjQsOCwxMC4yLDQuMmw1Ni01NmMyLjMtMi4zLDIuMy02LjEsMC04LjRMNDAuMiwzLjh6Ii8+DQo8L3N2Zz4=");
-            --btn-owari: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMjgiIGhlaWdodD0iMTI4IiB2aWV3Qm94PSIwIDAgMTI4IDEyOCI+DQo8cGF0aCBkPSJNMTExLDJIOTljLTMuMywwLTYsMi43LTYsNnYxMTJjMCwzLjMsMi43LDYsNiw2aDEyYzMuMywwLDYtMi43LDYtNlY4QzExNyw0LjcsMTE0LjMsMiwxMTEsMnoiLz4NCjxwYXRoIGQ9Ik03Ny42LDY4LjJjMi4zLTIuMywyLjMtNi4xLDAtOC40bC01Ni4yLTU2QzE3LjYsMCwxMSwyLjcsMTEsOHYxMTJjMCw1LjMsNi42LDgsMTAuNCw0LjJMNzcuNiw2OC4yeiIvPg0KPC9zdmc+");
-            --ダイアログボタン: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTc5MiIgaGVpZ2h0PSIxNzkyIiB2aWV3Qm94PSIwIDAgMTc5MiAxNzkyIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxwYXRoIGQ9Ik0xMTUyIDg5NnEwLTEwNi03NS0xODF0LTE4MS03NS0xODEgNzUtNzUgMTgxIDc1IDE4MSAxODEgNzUgMTgxLTc1IDc1LTE4MXptNTEyLTEwOXYyMjJxMCAxMi04IDIzdC0yMCAxM2wtMTg1IDI4cS0xOSA1NC0zOSA5MSAzNSA1MCAxMDcgMTM4IDEwIDEyIDEwIDI1dC05IDIzcS0yNyAzNy05OSAxMDh0LTk0IDcxcS0xMiAwLTI2LTlsLTEzOC0xMDhxLTQ0IDIzLTkxIDM4LTE2IDEzNi0yOSAxODYtNyAyOC0zNiAyOGgtMjIycS0xNCAwLTI0LjUtOC41dC0xMS41LTIxLjVsLTI4LTE4NHEtNDktMTYtOTAtMzdsLTE0MSAxMDdxLTEwIDktMjUgOS0xNCAwLTI1LTExLTEyNi0xMTQtMTY1LTE2OC03LTEwLTctMjMgMC0xMiA4LTIzIDE1LTIxIDUxLTY2LjV0NTQtNzAuNXEtMjctNTAtNDEtOTlsLTE4My0yN3EtMTMtMi0yMS0xMi41dC04LTIzLjV2LTIyMnEwLTEyIDgtMjN0MTktMTNsMTg2LTI4cTE0LTQ2IDM5LTkyLTQwLTU3LTEwNy0xMzgtMTAtMTItMTAtMjQgMC0xMCA5LTIzIDI2LTM2IDk4LjUtMTA3LjV0OTQuNS03MS41cTEzIDAgMjYgMTBsMTM4IDEwN3E0NC0yMyA5MS0zOCAxNi0xMzYgMjktMTg2IDctMjggMzYtMjhoMjIycTE0IDAgMjQuNSA4LjV0MTEuNSAyMS41bDI4IDE4NHE0OSAxNiA5MCAzN2wxNDItMTA3cTktOSAyNC05IDEzIDAgMjUgMTAgMTI5IDExOSAxNjUgMTcwIDcgOCA3IDIyIDAgMTItOCAyMy0xNSAyMS01MSA2Ni41dC01NCA3MC41cTI2IDUwIDQxIDk4bDE4MyAyOHExMyAyIDIxIDEyLjV0OCAyMy41eiIvPjwvc3ZnPg==");
-            --ダイアログ_閉じるボタン: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTc5MiIgaGVpZ2h0PSIxNzkyIiB2aWV3Qm94PSIwIDAgMTc5MiAxNzkyIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxwYXRoIGQ9Ik0xNDkwIDEzMjJxMCA0MC0yOCA2OGwtMTM2IDEzNnEtMjggMjgtNjggMjh0LTY4LTI4bC0yOTQtMjk0LTI5NCAyOTRxLTI4IDI4LTY4IDI4dC02OC0yOGwtMTM2LTEzNnEtMjgtMjgtMjgtNjh0MjgtNjhsMjk0LTI5NC0yOTQtMjk0cS0yOC0yOC0yOC02OHQyOC02OGwxMzYtMTM2cTI4LTI4IDY4LTI4dDY4IDI4bDI5NCAyOTQgMjk0LTI5NHEyOC0yOCA2OC0yOHQ2OCAyOGwxMzYgMTM2cTI4IDI4IDI4IDY4dC0yOCA2OGwtMjk0IDI5NCAyOTQgMjk0cTI4IDI4IDI4IDY4eiIvPjwvc3ZnPg0K");
-            --反転ボタン: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTc5MiIgaGVpZ2h0PSIxNzkyIiB2aWV3Qm94PSIwIDAgMTc5MiAxNzkyIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxwYXRoIGQ9Ik0xNjM5IDEwNTZxMCA1LTEgNy02NCAyNjgtMjY4IDQzNC41dC00NzggMTY2LjVxLTE0NiAwLTI4Mi41LTU1dC0yNDMuNS0xNTdsLTEyOSAxMjlxLTE5IDE5LTQ1IDE5dC00NS0xOS0xOS00NXYtNDQ4cTAtMjYgMTktNDV0NDUtMTloNDQ4cTI2IDAgNDUgMTl0MTkgNDUtMTkgNDVsLTEzNyAxMzdxNzEgNjYgMTYxIDEwMnQxODcgMzZxMTM0IDAgMjUwLTY1dDE4Ni0xNzlxMTEtMTcgNTMtMTE3IDgtMjMgMzAtMjNoMTkycTEzIDAgMjIuNSA5LjV0OS41IDIyLjV6bTI1LTgwMHY0NDhxMCAyNi0xOSA0NXQtNDUgMTloLTQ0OHEtMjYgMC00NS0xOXQtMTktNDUgMTktNDVsMTM4LTEzOHEtMTQ4LTEzNy0zNDktMTM3LTEzNCAwLTI1MCA2NXQtMTg2IDE3OXEtMTEgMTctNTMgMTE3LTggMjMtMzAgMjNoLTE5OXEtMTMgMC0yMi41LTkuNXQtOS41LTIyLjV2LTdxNjUtMjY4IDI3MC00MzQuNXQ0ODAtMTY2LjVxMTQ2IDAgMjg0IDU1LjV0MjQ1IDE1Ni41bDEzMC0xMjlxMTktMTkgNDUtMTl0NDUgMTkgMTkgNDV6Ii8+PC9zdmc+");
+            --btnHajime: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMjgiIGhlaWdodD0iMTI4IiB2aWV3Qm94PSIwIDAgMTI4IDEyOCI+DQo8cGF0aCBkPSJNMjksMkgxN2MtMy4zLDAtNiwyLjctNiw2djExMmMwLDMuMywyLjcsNiw2LDZoMTJjMy4zLDAsNi0yLjcsNi02VjhDMzUsNC43LDMyLjMsMiwyOSwyeiIvPg0KPHBhdGggZD0iTTExNywxMjBWOGMwLTUuMy02LjYtOC0xMC40LTQuMmwtNTYuMSw1NmMtMi4zLDIuMy0yLjQsNi4xLDAsOC40bDU2LjIsNTZDMTEwLjQsMTI4LDExNywxMjUuMywxMTcsMTIweiIvPg0KPC9zdmc+");
+            --btnMaehe: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMjgiIGhlaWdodD0iMTI4IiB2aWV3Qm94PSIwIDAgMTI4IDEyOCI+DQo8cGF0aCBkPSJNODcuOCwzLjhsLTU2LDU2Yy0yLjMsMi4zLTIuMyw2LjEsMCw4LjRsNTYsNTZDOTEuNiwxMjgsOTgsMTI1LjMsOTgsMTIwVjhDOTgsMi43LDkxLjYsMCw4Ny44LDMuOHoiLz4NCjwvc3ZnPg0K");
+            --btnTsugihe: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMjgiIGhlaWdodD0iMTI4IiB2aWV3Qm94PSIwIDAgMTI4IDEyOCI+DQo8cGF0aCBkPSJNNDAuMiwzLjhDMzYuNCwwLDMwLDIuNywzMCw4djExMmMwLDUuMyw2LjQsOCwxMC4yLDQuMmw1Ni01NmMyLjMtMi4zLDIuMy02LjEsMC04LjRMNDAuMiwzLjh6Ii8+DQo8L3N2Zz4=");
+            --btnSaigohe: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMjgiIGhlaWdodD0iMTI4IiB2aWV3Qm94PSIwIDAgMTI4IDEyOCI+DQo8cGF0aCBkPSJNMTExLDJIOTljLTMuMywwLTYsMi43LTYsNnYxMTJjMCwzLjMsMi43LDYsNiw2aDEyYzMuMywwLDYtMi43LDYtNlY4QzExNyw0LjcsMTE0LjMsMiwxMTEsMnoiLz4NCjxwYXRoIGQ9Ik03Ny42LDY4LjJjMi4zLTIuMywyLjMtNi4xLDAtOC40bC01Ni4yLTU2QzE3LjYsMCwxMSwyLjcsMTEsOHYxMTJjMCw1LjMsNi42LDgsMTAuNCw0LjJMNzcuNiw2OC4yeiIvPg0KPC9zdmc+");
+            --btnDialog: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTc5MiIgaGVpZ2h0PSIxNzkyIiB2aWV3Qm94PSIwIDAgMTc5MiAxNzkyIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxwYXRoIGQ9Ik0xMTUyIDg5NnEwLTEwNi03NS0xODF0LTE4MS03NS0xODEgNzUtNzUgMTgxIDc1IDE4MSAxODEgNzUgMTgxLTc1IDc1LTE4MXptNTEyLTEwOXYyMjJxMCAxMi04IDIzdC0yMCAxM2wtMTg1IDI4cS0xOSA1NC0zOSA5MSAzNSA1MCAxMDcgMTM4IDEwIDEyIDEwIDI1dC05IDIzcS0yNyAzNy05OSAxMDh0LTk0IDcxcS0xMiAwLTI2LTlsLTEzOC0xMDhxLTQ0IDIzLTkxIDM4LTE2IDEzNi0yOSAxODYtNyAyOC0zNiAyOGgtMjIycS0xNCAwLTI0LjUtOC41dC0xMS41LTIxLjVsLTI4LTE4NHEtNDktMTYtOTAtMzdsLTE0MSAxMDdxLTEwIDktMjUgOS0xNCAwLTI1LTExLTEyNi0xMTQtMTY1LTE2OC03LTEwLTctMjMgMC0xMiA4LTIzIDE1LTIxIDUxLTY2LjV0NTQtNzAuNXEtMjctNTAtNDEtOTlsLTE4My0yN3EtMTMtMi0yMS0xMi41dC04LTIzLjV2LTIyMnEwLTEyIDgtMjN0MTktMTNsMTg2LTI4cTE0LTQ2IDM5LTkyLTQwLTU3LTEwNy0xMzgtMTAtMTItMTAtMjQgMC0xMCA5LTIzIDI2LTM2IDk4LjUtMTA3LjV0OTQuNS03MS41cTEzIDAgMjYgMTBsMTM4IDEwN3E0NC0yMyA5MS0zOCAxNi0xMzYgMjktMTg2IDctMjggMzYtMjhoMjIycTE0IDAgMjQuNSA4LjV0MTEuNSAyMS41bDI4IDE4NHE0OSAxNiA5MCAzN2wxNDItMTA3cTktOSAyNC05IDEzIDAgMjUgMTAgMTI5IDExOSAxNjUgMTcwIDcgOCA3IDIyIDAgMTItOCAyMy0xNSAyMS01MSA2Ni41dC01NCA3MC41cTI2IDUwIDQxIDk4bDE4MyAyOHExMyAyIDIxIDEyLjV0OCAyMy41eiIvPjwvc3ZnPg==");
+            --btnDialogClose: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTc5MiIgaGVpZ2h0PSIxNzkyIiB2aWV3Qm94PSIwIDAgMTc5MiAxNzkyIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxwYXRoIGQ9Ik0xNDkwIDEzMjJxMCA0MC0yOCA2OGwtMTM2IDEzNnEtMjggMjgtNjggMjh0LTY4LTI4bC0yOTQtMjk0LTI5NCAyOTRxLTI4IDI4LTY4IDI4dC02OC0yOGwtMTM2LTEzNnEtMjgtMjgtMjgtNjh0MjgtNjhsMjk0LTI5NC0yOTQtMjk0cS0yOC0yOC0yOC02OHQyOC02OGwxMzYtMTM2cTI4LTI4IDY4LTI4dDY4IDI4bDI5NCAyOTQgMjk0LTI5NHEyOC0yOCA2OC0yOHQ2OCAyOGwxMzYgMTM2cTI4IDI4IDI4IDY4dC0yOCA2OGwtMjk0IDI5NCAyOTQgMjk0cTI4IDI4IDI4IDY4eiIvPjwvc3ZnPg0K");
+            --btnHanten: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTc5MiIgaGVpZ2h0PSIxNzkyIiB2aWV3Qm94PSIwIDAgMTc5MiAxNzkyIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxwYXRoIGQ9Ik0xNjM5IDEwNTZxMCA1LTEgNy02NCAyNjgtMjY4IDQzNC41dC00NzggMTY2LjVxLTE0NiAwLTI4Mi41LTU1dC0yNDMuNS0xNTdsLTEyOSAxMjlxLTE5IDE5LTQ1IDE5dC00NS0xOS0xOS00NXYtNDQ4cTAtMjYgMTktNDV0NDUtMTloNDQ4cTI2IDAgNDUgMTl0MTkgNDUtMTkgNDVsLTEzNyAxMzdxNzEgNjYgMTYxIDEwMnQxODcgMzZxMTM0IDAgMjUwLTY1dDE4Ni0xNzlxMTEtMTcgNTMtMTE3IDgtMjMgMzAtMjNoMTkycTEzIDAgMjIuNSA5LjV0OS41IDIyLjV6bTI1LTgwMHY0NDhxMCAyNi0xOSA0NXQtNDUgMTloLTQ0OHEtMjYgMC00NS0xOXQtMTktNDUgMTktNDVsMTM4LTEzOHEtMTQ4LTEzNy0zNDktMTM3LTEzNCAwLTI1MCA2NXQtMTg2IDE3OXEtMTEgMTctNTMgMTE3LTggMjMtMzAgMjNoLTE5OXEtMTMgMC0yMi41LTkuNXQtOS41LTIyLjV2LTdxNjUtMjY4IDI3MC00MzQuNXQ0ODAtMTY2LjVxMTQ2IDAgMjg0IDU1LjV0MjQ1IDE1Ni41bDEzMC0xMjlxMTktMTkgNDUtMTl0NDUgMTkgMTkgNDV6Ii8+PC9zdmc+");
 
             --マス: url("data:image/png;base64,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");
             --マス_: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAZoAAAHGBAMAAAC/ZFDcAAAAGFBMVEVHcEwAAAAAAAAAAAAAAAAAAABgYGAxMTFwyNPwAAAABXRSTlMAOXi44neyL5YAAAQcSURBVHja7d1NU+NGEABQSV6Tq4TFXZbNnbXYOyzLHUJm8wvYveZC5e+HXFgousKHoQp3Xh+nxho9Tc/Yh/aoqjJH3YWtbdTaxVeIenbP7Vl3XfvsobqnNE2JWr/80UZdT6O+50FbKc/9fFPK0ePWWThUU06e4hxED+xyFgyxaKeg7yzQ1BfRSH07Rs2fhuCmwqHWYeuTmqqNhqi6r9EQwQXqr5ug52oVXbRaRcJlOFTVv0pTn4X5F0x/fRppTvvgxteb6Bary+q5SX2wOX+VZh3uArcP53GinZ1/jm7nKPp0NFZzEo6/jp7x9Kq5qX+PNpp+eRzczPhl+bgxnJt+OT1z2VTrLhiqWiw3r9HEG00TzkJ4gXWUU/W34KLVPEqDeKjmfKjyx4+dj/ua67Lrcf8b7TqasL3wO28HutLQ0NDQ0NDQ0NDQ0Oy2pmkzaT5l0uyvN0MizeHqKFGm9XUmzSqTpj6tPx+l0fRDfTbk2QWqavRbgIaGhoaGhoaGhoaGhoaGJpcmrPn6HjV+0K4PNOrTrBsaGhoaGhoaGhoaGhoamh3WzO/+WZ5B080yaTbNkEhzWp/k0dxaTvNoZsPdyQQJNOtff39PoOl+nYXi25OGhoaGhoaGhoaGhoaG5kUa9Wnq06wbGhoaGhoaGhoaGhoaGpoP0rVOpVkk0+y3aTTd8fkmj2Z13ObKtDqVZp5I04/HiTTNuPRbgIaGhoaGhoaGhoaG5kH8+Hu7W9z7+dfH0ezdlIutND9LeUvNluVhpXzfqujsupSPU5/257bVZTcfqT7tt7Jlpt28baZtuQuEN/OCq87Dp2GHpqGhoaGhoaGhoaGhSaBpU2kuEmlW09U0pNF0t5Eo08ZmSKTJdhrcJo+mb6uDNo1mv7p727ffAjQ0NDQ0NDQ0NDQ0NDQ0L9I4P835adYNDQ0NDQ0NDQ0NDQ3NU13rVJUps+OzKVGmNUOiTGvWmyGR5nC8SJRpfZVJs8qkWX2broY0mn8rIVu/BWhoaGhoaGhoaGhoaGhoaFJp1KepT7NuaGhoaGhoaGhoaGhoaGhoaP6760EppU2jWcwXs0SaxaJPpBn7szya/mIxJZqbqkq0bnLtac62o6GhoaGhoaGhoaF5k4t5v+f98H5P7/d81kR7v+eDmIdPww5NQ0NDQ0NDQ0NDQ0NDQ/N+J/WVcmVuaN6/a13Kpbmhef+uh6WUwdzQ0NDQ0NDQ0NDQ0NDQ0LxC4/w056dZNzQ0NDQ0NDQ0NDQ0NDS7q2mmaZNIM45LmUZD88KTk8ZxbNNoVtM0DTKNhoaGhoaGhoaGhoaGhoYmlUZ9mvo064aGhoaGhoaGhoaGhoaGhubtu3a30abRODmJhoaGhoaGhoaGhoaGhoaGhobmdZpU9WnzVPVpQgghhPi/xj/AjbFfunj3xAAAAABJRU5ErkJggg==");
@@ -312,8 +312,8 @@ class shogiBeya extends HTMLElement{
             --桂_: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACsAAAAwCAMAAAC/knOqAAAAh1BMVEVHcEwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADAwIGBQPf0IEAAAA5NSHm1oXMvnadkVqCeUvJvHS/sW6il15rZD6NhFLXx3yGfU7by3//7ZT35pD86pIDAwI/OiRnYDzw34tPSS4vLBvAsm+wpGbQwXmAd0odGxGhlV1/dkqRhlQUpMqgAAAAHHRSTlMAQmGUM1MeBQsUcX2I/SixyujWPY1uT8PPnLuZmaStNQAAAmNJREFUSMe1lVmXojAQRt0QFLG1u2cPVHbW///7pkJICJB2nqYelOO55lS+mwq73X+tNM1eVpp6lJcvi58vmYPTR1m9qPJxuns4fVRkKk4lWVVVPZP9/eLYP47lEqBZw+X7NTl59rOcYArAaLdat/yZH2b228Q2ADUhShX4XBAtuGV/3AL2u2Vr0wBlhGhGBuANMMu+5UEPH5YV0JoPAw4DNAVAsWF3F8sCYKucAcMtDhLqWtCRPebJ/eJcZJbtgOppQ50iqnZ7O17398yzU8AKI6Oi7xl+9z6yJ7LnDYvbGxgVTGglqc9sxf6qwkQZcpTOKm6HgJ1lGBCFALR0VoHxnv1B8zKM5qGTGJ2c2VDFLGPsWOkWKA3YRbxehg1OtqBV+xXrZLiWZbC3lQovYwSZsJsjURVhwERT2miFvRTReBfs5qRv2FFGIfpxMTVoUjvH1VKFk1GAL22OZsHqjYpZRq0UGwOoKWMM/7JRMcvgqmikNp3QhrVtG4nXy8ApQmkMZ4dKUeCyETaQ0VgJrSBMxFR4GbrXrO1x6plUteQxFT5gnDDaDl1TK6rsxG/iDWU0YG8VwVgf0+Yno6A9xQPZd3gkaNN0ERV+MvggJCg1JhediuVktGMPHHR0KpaTIc2VRvR0XUbiDSaDM1GPMfOv2F3Gzd2+vqWrkh+vyTJeFPfx+ShD3IBl8f62iQGbuJyS/Pdzwh14PN7Mnb5is+x8Sg7Xm8UdmF8Pyem8ahfhy/m+31vcg4dkj2gWeR0ifdoniOe5A+/m1ZbGX54jjqsfEgvGyQWO9RoMcFP/Ah1uavPzXyn7iP54K4uvAAAAAElFTkSuQmCC");
             --銀: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACsAAAAwCAMAAAC/knOqAAAAkFBMVEVHcEwAAAAAAAAAAAAEBAIAAAAAAAAAAAAGBgMAAADezoEAAAC0qGkAAADt3InMvnfOv3fn14dJRCutoGWRh1SBeEuFe0zy4Y1YUjNmXzz/7ZT965MAAAD35o/66JE/OyXw34uAd0oQDwmglV3Asm9uZkBfWDcvLBvQwXggHhOxpGbg0IK/sm9PSS2Rh1R4cEYRlJ5aAAAAGnRSTlMAMYBQE3CQBiFBm1xLZth26sGs2cvBO/GSeXsFMrYAAAKOSURBVEjHzZXZYptADEVjB8dLHLtp06SdCKTZYVjy/39XDVvApk4fe5/m4SA090pwd/efatvqX8DXw+l0eE2Sr/Dt8fCWZu9Zlr4djknk/wIm5+c0zbL3Vhnzz+fdYvnd+cRgpESreErT9HR+va7egUJQocWgWD6l1S6Zs0dGOwAgF7koK4sh4ln6+xI+pj2qwSkMyivn+CGG01/3qzl77stSUYu8KFAKasC0hX8+7XfJlD30rPNUucYgFlB0dbOXDRee+tqzjbKFskZgHYRW7f2yH+t5E9vnltUqFwFCLtA5BNex39aPc/YUWe1I5BZAMduYvMZltrfBFOBjPb4bO6LK1ogHvtwCywrgMaCkWkkSS+xgr7UewDeEtfsoXNWx3zeLLGkdQLY9kC2gpgV2iEKI8gMUNCi18uTBtmFs7qdh9PZar0CxBYQASIJ8y76sp2EMUQipLHVTYcdhuwijj2JRlwZ3UfSD1lUMFrFaZD/t5UmTwijuF7F76sLgkdW8FeiqquTloKpcYsdJFxwwSomaJIcSnb4yeMJKgQ3HUUNdSgC6ZvsoyqpSNSpDPJp5ieBDd7lZGL29OU+ZDLw6HIPk42DaNIwxiq4NXrNQy1I4txDGEEVVBS2xXcn4FgmWPbkweIiCV6JAC7yZiAq8h8Lzjlywgw3mQ4kSTI4ysLcG6muDR5YKKE3sQcYPFYG/Zkd7LUdhoIyHEOuCuApjYEsAzUQcyRjZIjtsRcOeVhpEDu0YG2i/PPMwBnvzhqhQXbHcSQedfdMwZlEYwH7xahh6mIQx3wpN4wn01WbEKG5qylL6heiTTVb3m/XDDa03Y7/Jbv/4tLmhp8d9/8/YMrza31T8vWzvBvgLRfQPng6N1+L0ebUAAAAASUVORK5CYII=");
             --銀_: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACsAAAAwCAMAAAC/knOqAAAAhFBMVEVHcEwAAAACAgEAAAAAAAAAAAAAAAAAAAAAAAAAAAABAQAAAAAAAADg0ILm1oU8NyJrYz7Ft3Kjl16CeUvYyH3SxHm/sW6il16NhFKpnWL/7ZT35o/86pIAAADAsm8oJhfw34tAOyV/dkkQDwlfWDfQwXhuZj+hll2ypWdPSS2QhlOflFwCvsHpAAAAGnRSTlMAMJQkGYBbCgUQb0s8/squwObUPZuMbk/PlDA9ih4AAALCSURBVEjHtZXblqIwEEVFUAGNrfZcA5V7QsD//7+pcI3CTD9Nlg9Z3duyODtFdrv/ufL89MXK8xEV1RdLZMVpgPNrVf9zVdckzQY4v9Z0WE94jjsq5h2l9f14SYuB/TaxANCSYSuBLeyjPCfZwH6vBpgBGGXs8DXNhej6fV39Ohwn9sfIWgjFhNNgKTRMcegG9rawP0eW9qwCaHDLaANABvZjYT9fWA+OUoI7EzYzOzzbrphYDiK0jW0yYAS4GNn94ZwWu1e2DXWJV9Iy/Hmt2MSWM3vqA9bAefhoiYuBkxqGJup7YE8xy4x0oIbEsAepGs/YxF5mdpZhDCWq9YFdtFUPZLORnWVgYByUoAJZj1tuJxWXbDxoswzPQRJLrRZMy1Yz1ucbqVhkCABFWmgV+E6iE0rfVUQyUBlwpRuulEQVdK0iCpgwjL8hwhtJG/5cq4hYh9ECaIbPKOYTGauYAg6xSul8v2s6Mp/0SEXEbqz6RUUsI/QxDJJQvB2nIlIxy3DYpMB+pWCd0TgZbqViluHwFHLdKNmBxqSnR4tVzDJEC9wJitli0s3zKdYqIhnMcGVaKTqOUpzbULEELJRuhZJecvBLvLGKmSU6jGXowQCeMrahYglYthYjkDSMhKXCPFcqIhkGpEHWeuzB6uZ9Kl5k4L9xlihzGK7uVlMRT4YNbeJksrYR3NANFctkMOhCvhyHpx1P2puKZTIsYLdae6lNSGRDRSTDS4dDZsNrcHMq+oBFeLdHR7EJLYR3uniLF9nP39cqxuserOxtf3iNDEPLknN5u/d43RdE8H7b7xHFd/oLmxfp5XwsD7eHCHxVkUcPHsrjeborlsJFliCN+MeDkMfHCCKZ4IW1ug6LLEUcq5cHXCVWRDANV1u+cXkWPR7Kh4I9uEWO/ClURz5J0lDxlH91NxcZrr8XfMPDWv35D6/ei1EfxtzyAAAAAElFTkSuQmCC");
-            --金: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACsAAAAwCAMAAAC/knOqAAAAkFBMVEVHcEwAAAAAAAAAAAAAAAAEBAIAAAAAAAAHBgQAAADQwXkAAAAAAAAAAAC2qmrg0ILt3InPwHjn14fTxXqtoGXHuXSAd0qQhlRKRStJRCuCeUuJf0+lmmCSiFVmXzyGfU5YUjP/7ZT45pD965IAAAA/OiTw34srKBmAd0pXUTLAsm+mmmAQDwng0IJvZ0CQhlQgheySAAAAIXRSTlMADTFUcBaRBSJC/GN9h0ik2HTBh9nmw8utqzdDZ8l5upJzS2y2AAACfklEQVRIx82V63raMAxAGyBLMKUEumt3dZDvdvL+bzc5ju0YMraf01daLqdC0ZGcp6f/NJop/gV8O3Xd6WtdVX/Bm5cT7/tr3/f89K2u/4g39fmCXAzkL+d2NX177vpA0ilmvHt9u8++4LiQicdiNm1Vsi99TEipA9DxOdI/bmFk48eUAVPpxbX/td3U1ZI9Z3YAQxnjif152LcF+5pYgyiWLHhkv++2BducIktgpGRkUggS3ujfP2MRi4Kby3xpxCoDQsmRC2vCxX24ZbvAIoq/pfCds6C4Z8nxULKhBAkDHbVkYME6J8BKjgUfD/s7VguBX0uYUjBqzSmXTJnAts1ae5GhCgQbQh+uyH7ZFU3LrBEDU4CdE6nBn0s2q+DW8hGowMoj+7FkswpqBqrVMBidZHzCplUrKrSQilnwYd3MljKSCupzTimdHuOklTKiimVoF9lSRpPLddhjLgeBRcTEpYzIEuy9BPwrjdYpcSkjtZcJHAZCnKMEUyse2EJGZhWVjKlBC2AG4RUZQQXRWilsmQRp7MAFCL0iI6ggOF1M4fr4ydXCyjUZSYW/GskojthgpTR0ZTNmFZo7baRg/p80dRLwO8ytjKDiagBnUeGPlAqLxYlnjN3KSCr88mAuy4xfzDiWhYzEKjxwfCqUgaUDrMiI7Z0GfDpzHFhO41FVyJhZ3Fxsk3/gMYUTmdmFjHkrRrCj0p7FFkw1yPvNmLfCIGDm8eLjqDObZeSt8CfffJA5hVNp7jZjsRU+Y3xC7HxYLmU0Xb5LrEafZTR463kc/Dmx9Wa7O757EMddqqFu99vD7kEctvt2Zqu63ewfxgZvdEEywnX7MPwt9Ok3ReimIvZZSMQAAAAASUVORK5CYII=");
-            --金_: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACsAAAAwCAMAAAC/knOqAAAAkFBMVEVHcEwBAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADQwXkAAACYjVjn14ZtZT/IunRIQyovKxvJvHSNg1LYyH2/sW6il160p2jfz4FRTC//7ZT965P35o/66JEAAADw34s/OiRXUTKAd0rAsm8wLRwQDwng0IJvZ0CglFyQhlQgHhOvo2bcv9M0AAAAHnRSTlMAb1yVFSIxDAYDfFE8hv5G0cjA57KtjT6bbk/d7TyTvjkvAAAC0ElEQVRIx7WV2ZabMAxAhwQCZCGZdDJdkjrGu1n//+8qGcwWurxUc+YcP1wUWVe2397+Z6RJEv8xkiTtUU7/EjwM46TL+k7zJ/758Ou8W+f0fReFscucvOdP4oILm5E+uF+QZ/5lc45Clzj55tmKMSaLDjXlyF6Cw65j00/PKsZ0XbuMNWMVKWTbsftNzybf6cgSAJjCpZa1ZTWy9HrybPrDsxrYwjLhPsN/yx37gXnd3tKvU5ZbhhVL+KBhrauX3vYHz8aeJa4Ghb0QAr6U3d7odn+Iup69jawBlmSVbEpgiVGeDc5R3HmLuwYLIaBWw4xUSopGwhJ6ge19ZVshoAUF0VivMKrSBddLdpRBWqVsyUGawN8vehWn4BglPTvIIMo2kKq1HH7DWIbKkd0cQ896GRqK5XVTKqaEVFJqnc1VTGRI1rSCNUxZATVgixcqRhlPLpkpM1IUJIN+Gc+OKmYyCq11izJgJlqZvaiYyoDxgtSKk6op/EhOVQwN7hKTeczbO2NrNMF1VUq9zo4yYCIxGmiZ0eRVxUwG122JOctqPEETFdOTQUjJDGE1t5b7rU1VTE8GjmVFmBRl05IVFdOTAUWUMIsSiyErKryMSgpoLNe6ZlIK8NAaGKSFil4GV5aZAjoBE690DZWrVxVDg2Ee3JYahKS7g5btncioLAylkg2rOnSFHWVkjVGizmAwslUVcxnGcLzZqnUVcxlwfAAtybqKuQzYlWFiGLOFCicjH2G4qobhzRcqUAaneIv702zcMOC1Tvk2mKmApv38fFCH97x7AyjNrrfTvGWwuXB3CK53wPtnA14Jer9ut9vTcKcPbBwdD5tgf71DMRC0uH8guA82h2MUJ/MXLox2xzPiH5fH43IDzoHnI7xBSbp4DuMw6vFgj1wPwmu1QDs6DvvsEF3GMF4hh7c2xPQQEYLJb8Aex2JcQML0n57ytYS/AEf7nvqfQiIdAAAAAElFTkSuQmCC");
+            --kin: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACsAAAAwCAMAAAC/knOqAAAAkFBMVEVHcEwAAAAAAAAAAAAAAAAEBAIAAAAAAAAHBgQAAADQwXkAAAAAAAAAAAC2qmrg0ILt3InPwHjn14fTxXqtoGXHuXSAd0qQhlRKRStJRCuCeUuJf0+lmmCSiFVmXzyGfU5YUjP/7ZT45pD965IAAAA/OiTw34srKBmAd0pXUTLAsm+mmmAQDwng0IJvZ0CQhlQgheySAAAAIXRSTlMADTFUcBaRBSJC/GN9h0ik2HTBh9nmw8utqzdDZ8l5upJzS2y2AAACfklEQVRIx82V63raMAxAGyBLMKUEumt3dZDvdvL+bzc5ju0YMraf01daLqdC0ZGcp6f/NJop/gV8O3Xd6WtdVX/Bm5cT7/tr3/f89K2u/4g39fmCXAzkL+d2NX177vpA0ilmvHt9u8++4LiQicdiNm1Vsi99TEipA9DxOdI/bmFk48eUAVPpxbX/td3U1ZI9Z3YAQxnjif152LcF+5pYgyiWLHhkv++2BducIktgpGRkUggS3ujfP2MRi4Kby3xpxCoDQsmRC2vCxX24ZbvAIoq/pfCds6C4Z8nxULKhBAkDHbVkYME6J8BKjgUfD/s7VguBX0uYUjBqzSmXTJnAts1ae5GhCgQbQh+uyH7ZFU3LrBEDU4CdE6nBn0s2q+DW8hGowMoj+7FkswpqBqrVMBidZHzCplUrKrSQilnwYd3MljKSCupzTimdHuOklTKiimVoF9lSRpPLddhjLgeBRcTEpYzIEuy9BPwrjdYpcSkjtZcJHAZCnKMEUyse2EJGZhWVjKlBC2AG4RUZQQXRWilsmQRp7MAFCL0iI6ggOF1M4fr4ydXCyjUZSYW/GskojthgpTR0ZTNmFZo7baRg/p80dRLwO8ytjKDiagBnUeGPlAqLxYlnjN3KSCr88mAuy4xfzDiWhYzEKjxwfCqUgaUDrMiI7Z0GfDpzHFhO41FVyJhZ3Fxsk3/gMYUTmdmFjHkrRrCj0p7FFkw1yPvNmLfCIGDm8eLjqDObZeSt8CfffJA5hVNp7jZjsRU+Y3xC7HxYLmU0Xb5LrEafZTR463kc/Dmx9Wa7O757EMddqqFu99vD7kEctvt2Zqu63ewfxgZvdEEywnX7MPwt9Ok3ReimIvZZSMQAAAAASUVORK5CYII=");
+            --kin_: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACsAAAAwCAMAAAC/knOqAAAAkFBMVEVHcEwBAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADQwXkAAACYjVjn14ZtZT/IunRIQyovKxvJvHSNg1LYyH2/sW6il160p2jfz4FRTC//7ZT965P35o/66JEAAADw34s/OiRXUTKAd0rAsm8wLRwQDwng0IJvZ0CglFyQhlQgHhOvo2bcv9M0AAAAHnRSTlMAb1yVFSIxDAYDfFE8hv5G0cjA57KtjT6bbk/d7TyTvjkvAAAC0ElEQVRIx7WV2ZabMAxAhwQCZCGZdDJdkjrGu1n//+8qGcwWurxUc+YcP1wUWVe2397+Z6RJEv8xkiTtUU7/EjwM46TL+k7zJ/758Ou8W+f0fReFscucvOdP4oILm5E+uF+QZ/5lc45Clzj55tmKMSaLDjXlyF6Cw65j00/PKsZ0XbuMNWMVKWTbsftNzybf6cgSAJjCpZa1ZTWy9HrybPrDsxrYwjLhPsN/yx37gXnd3tKvU5ZbhhVL+KBhrauX3vYHz8aeJa4Ghb0QAr6U3d7odn+Iup69jawBlmSVbEpgiVGeDc5R3HmLuwYLIaBWw4xUSopGwhJ6ge19ZVshoAUF0VivMKrSBddLdpRBWqVsyUGawN8vehWn4BglPTvIIMo2kKq1HH7DWIbKkd0cQ896GRqK5XVTKqaEVFJqnc1VTGRI1rSCNUxZATVgixcqRhlPLpkpM1IUJIN+Gc+OKmYyCq11izJgJlqZvaiYyoDxgtSKk6op/EhOVQwN7hKTeczbO2NrNMF1VUq9zo4yYCIxGmiZ0eRVxUwG122JOctqPEETFdOTQUjJDGE1t5b7rU1VTE8GjmVFmBRl05IVFdOTAUWUMIsSiyErKryMSgpoLNe6ZlIK8NAaGKSFil4GV5aZAjoBE690DZWrVxVDg2Ee3JYahKS7g5btncioLAylkg2rOnSFHWVkjVGizmAwslUVcxnGcLzZqnUVcxlwfAAtybqKuQzYlWFiGLOFCicjH2G4qobhzRcqUAaneIv702zcMOC1Tvk2mKmApv38fFCH97x7AyjNrrfTvGWwuXB3CK53wPtnA14Jer9ut9vTcKcPbBwdD5tgf71DMRC0uH8guA82h2MUJ/MXLox2xzPiH5fH43IDzoHnI7xBSbp4DuMw6vFgj1wPwmu1QDs6DvvsEF3GMF4hh7c2xPQQEYLJb8Aex2JcQML0n57ytYS/AEf7nvqfQiIdAAAAAElFTkSuQmCC");
             --角: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACsAAAAwCAMAAAC/knOqAAAAmVBMVEVHcEwCAgEEBAIAAAAAAAAAAAAHBwQBAQEAAAAAAAAAAAAAAAAAAAAAAADq2ojQwXi+sW6qnmLDtXHw4IuTiFXZyX3DtXHh0YOSiFVJRCvay37Ju3RbVDR7ckdOSS3/7ZT965L45pAAAADAsm/g0IJAOyV/dkoPDgiWi1f0447w34swLRxfWTe/sm9OSC2uomUgHhNvZ0A/OyXt0/0eAAAAH3RSTlMAkRcyB3APIkIDU2J8hsn+8Unk7cyIYLEurZp4pLtyD9BowQAAAolJREFUSMellW2TmjAUhRUQRHdhXFu1uttACEm8vPv/f1wTJMlVu9qZng8Mjs+Ewzk3ZDb7T8VxEMTxv4CHU5KcDl6o+OdguEvyPMvyc3KKnuLxbp9rUkvd7Heewv9Gx5v9dgTJqBHf7jde+IAfjldQkUz08koTjR83d4vH5wnU6qloGmYXP/vRDXzIDUgIp0JySjvjJf+tYcducotKWgEBQYfpd5Z/rnwPsTvLSsEJgaosiGW/1ssodHZ/GlZW2mhbkKZJDftjsYpCazg+2nWhabq2ElRpMOybMuHYxLApcNEP+r2A0mnhjxs2SEwM9TAm0ahrSeEaxMf7Gr1cYC0UtNBs27aspMVk4lu21Vb7sk4xu4wCVIVlOUvVZfRg2PkCsRvMEtLR8jKAY38tUMA7xNY6r6ockN9PxLoq1JIFsPEFkQcVsC0DsVwDBWX3rG/ZxLG9NlKBvFyEZXEZrgpS6Clg6sJaWprpwWUEWzuRSJ0ZtWyLWTe9TIK5TRsgrgzDeo4lvVCTzqAbo2sey0C7otabByrdsyhb9liGZVX+tf4fJC8YcTsDsVO8mSw5Y6IxTNNxzpkt474KBVABjKSyHn0oJ7dlxHvHQq9ircaJaAsl3t2WgapQxapvDtSDiqutTGaoDFVFZmOQ1k1h73PmWGMBWipSxNaE3O8iw7JKSDsEeiPbgcjnZhdN8XaiVJNL3UDQ/jHgidXp37L0kT25yAyrpxIQ+6U/U7P4pgo+eQRZ8wqxYxma3eMPKjdP6CnKYSxjFuAqMpA2M2hLO8qInY6e75WnOmDNwjl/oTO8Taznrxbv86d6X0wewmi5Wi+ear1aXjMLvchfvpCvTtzrIex50Qvp0/YPNLauEPwatNUAAAAASUVORK5CYII=");
             --角_: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACsAAAAwCAMAAAC/knOqAAAAmVBMVEVHcEwDAgEAAAAAAAAAAADw34sAAAAAAAAAAAAAAAADAwIAAAAAAAAAAAAAAAAAAADRwXno14bUxXpIQyqQhlTIunSill5iWzkiIBTk1YW1qGl9dEl5cEa3q2rEtXGzpmj/7ZT45pD86pIAAADAsm8/OyXg0IEoJhcPDghmXjuAd0q/sm+PhVOflFxRSy6uomV4cEZOSC1HQilDFH6KAAAAIHRSTlMAg0CUA/8yCwYVHnRPJ2VZ/MmSt9LnT7Sp7+HAPcV1X6BFvgUAAAK5SURBVEjHtZVZd9owEEaNsbyAwaYJJYSktdFq4YXk//+4jiRrcUNPnjoPHAI3c4bveqQo+o+V5Hn2TeV5olHUfltoU2R5lETJob1+U+0h3RVZlEf54drYQnRE7o/+Nr+5Nscq3hWK/dG6rzuMuSUk7u3H7fu2TGfWNQZUdr1pTbG0fdvnVWXYXyGruHp+Txx7sezPkHXjGJbdNPukWcghYPmSZVRMS7bwLMU+Bop7wZmZYb0tIQeozLOdmxGmFngO0LCZZs+OHQJ2wB/2t53X23hmvQzER3gZPiCJHlP76fUI7Eaz+UHLmOQN6vOTY0gZpuVu9PZ1vZ/ZzIgTWBfvhrphSATTgApgc93XiGNSyskBRDAmaW+17dPCsEHAKn2pJbMRUzbHoOPVrJfBPqieBEadMO6cYs3qhz3ZWJYAJ7oJMdQgwV0MRoVhvQxEahdfzxZsZvYtQz7ggTV/1xU5FQsZFI8A1+ofavvQt16FYu1mECwo7RFX0XHp2b1j/RYRLZYpD8StRaAiCrbIsASeXETw5DfIqgD2d8CyjnIdnZV8bU9ORSgDWHSnVLWUnvUqoN6WMwBWs4B9cSpCGcDWZgY8elarsH1Dlo3jJ77rH/hAWyADzTmouO7dl61YyjCHydRxIRv0QEUo465GFXTsCUGPVIQympqQ5jYqed0QqAjY4EhrblRtpRTDIxXR4pi6YwFPOsdD81BFlLx5FpZHDsI9OErFqgzZDME9YJeTEIHtAsH5jxYqILS393Pr8YELZsD2/PyyCiMDtkjL0zsKcA2i16f1eqXO/9yzebGJy/329NoaXIGtAoHcl/EmZBOA07is9qvL0dxox9OLBqsyTgFNFldnVmx2qWq+utT1RYG6ZbpT12CyvGhzRUPzuNpvt8BByxhaPiCXzcuqKv/RcnmLKxxKgwvyD+QLsCVjG8ScAAAAAElFTkSuQmCC");
             --飛: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACsAAAAwCAMAAAC/knOqAAAAkFBMVEVHcEwHBwQEBALw34sAAAAAAAAAAAABAQEAAAADAwEAAAAAAADh0YIAAACvo2bq2ogAAAAAAACzp2jby3+QhlRUTjDFt3IAAADLvHXh0YOSiFXKu3WckVrNv3ciIBT/7ZT965MAAAD35o/66JF/dkoZFw7Asm9AOyXQwXgwLRxfWDeglFxPSS6QhlRwaEFvZ0APvSV+AAAAH3RSTlMADxf8B0OQIgNwMYD+WP3JZDtKi8ur5k5ysS67YaOcr/DzPgAAAqxJREFUSMellYtu4jAQRUscmgRMeHS3BbS7xonfefD/f7djG2wnILrSjlRVwGG4c++M8vb2n1WWeV6W/wKej9vt8ZwtgH8NLo7bpr1c2mZ7LF7i5eHUWNJW2zSnXxng5XMQOZC4cjgCfPGAnz8AjCQU0/WlbRv8+zBrXjZJS4JqJgii2ja/NGhVTOAzoA7Dsu811ZIqyZDT0jbVHuDIHpp7T8X1gEknMZeydnDzc7PKEvZ4Z5Vy/wwjuOfmxu6WxSKyHzcJZOAdGTUIIMT+ORE/qq9iEQSXdxZpSrGgHeOdkFRiz65BRGS3nlWackYEFeAYDDj4vp8TNncsuvIRK9uXGamINS6yYbjcjwaD4ZprTg2THA2GYz/cerd/YEdKqaa102BCgJfmfbcv8hiFH81IMVDkWKa1Ep1n/1TLyMYoMO/9bAZpztTN4CoaXAYWPFOOrTkimGn0yEZ7IQoigCNc16BHi3kYgR0HOzlWbi+oLenD+FoFdtvGvQXMWQX+Mid4GkY+ZQXtk1ezMHLUph8SyqE5Ci9blISRB8vAUSUY5bBC9BpYG8adzQKLejsPLBBjPUuCq0JwMQqYCEyz06eCU4MjO4BKyJiza8+6p2y4CiJhybjVMMACm2CEC2Mahd00O7/TwChVgQ1hlKfA1vQKY1kf9GidI/PLSKLA1IwSWCHg3LonYZQoxsbtzzsNnMfgcAgjTywbKeulXRrO1fQyHlk89qwGDV2nyLMrSqPw+0B94EI8GHxjzXVgTEpNk+LzKzr60ZCBzyRjcMcUWnbMwNfqNIwyieK25PN9uIdh2VM71/vA1tbgt3x+FZY1c/YzYael1eyNVq13nkXNt4XufbPVplq/v6x1dWMXxXKzq17WbrP0ni2yYrVfvqz9Cp64/iGcZcU3ZZ+2fwEWxasK7/2XgQAAAABJRU5ErkJggg==");
@@ -336,30 +336,6 @@ class shogiBeya extends HTMLElement{
         #shogiBeya *{
             box-sizing: border-box;
         }
-
-        #kyokumen-wrap {
-            display: flex;
-        }
-        #shogiban{
-            width: 410px;
-            height: 454px;
-            background-image: var(--マス), var(--盤);
-            position: relative;
-            margin: 0 3px;
-            -webkit-tap-highlight-color: transparent;
-        }
-        :host([data-reverse]) #shogiban{
-            background-image: var(--マス_), var(--盤);
-        }
-
-        #shogiban .css-koma{
-            width: 43px;
-            height: 48px;
-            background-repeat: no-repeat;
-            position: absolute;
-            z-index: 2;
-        }
-
         #先手名{
             width: 100%;
             text-align: right;
@@ -374,9 +350,11 @@ class shogiBeya extends HTMLElement{
             display: none;
         }
 
-        
+        #css-kyokumen {
+            display: flex;
+        }
 
-        #komadai-sente{
+        #komadaiSente{
             width: 49px;
             height: 340px;
             background-image: var(--盤);
@@ -385,7 +363,7 @@ class shogiBeya extends HTMLElement{
             display: flex;
             flex-direction: column;
         }
-        #komadai-gote{
+        #komadaiGote{
             width: 49px;
             height: 340px;
             background-image: var(--盤);
@@ -394,8 +372,8 @@ class shogiBeya extends HTMLElement{
             flex-direction: column;
         }
 
-        #komadai-sente > div,
-        #komadai-gote > div{
+        #komadaiSente > div,
+        #komadaiGote > div{
             width: 43px;
             height: 48px;
             background-repeat: no-repeat;
@@ -406,18 +384,36 @@ class shogiBeya extends HTMLElement{
             text-align: right;
             padding-top: 30px;
         }
-        #komadai-sente > div::after,
-        #komadai-gote > div::after{
+        #komadaiSente > div::after,
+        #komadaiGote > div::after{
             content: attr(data-num);
         }
 
-        #komadai-sente > div[data-num='0'],
-        #komadai-gote > div[data-num='0']{
+        #komadaiSente > div[data-num='0'],
+        #komadaiGote > div[data-num='0']{
             display: none;
         }
 
-        
-        .青, #css-lastmove{
+        #shogiBan{
+            width: 410px;
+            height: 454px;
+            background-image: var(--マス), var(--盤);
+            position: relative;
+            margin: 0 3px;
+            -webkit-tap-highlight-color: transparent;
+        }
+        :host([data-reverse]) #shogiBan{
+            background-image: var(--マス_), var(--盤);
+        }
+
+        .css-koma{
+            width: 43px;
+            height: 48px;
+            background-repeat: no-repeat;
+            position: absolute;
+            z-index: 2;
+        }
+        .青, #css-lastmove {
             width: 43px;
             height: 48px;
             background-image: var(--青);
@@ -499,10 +495,10 @@ class shogiBeya extends HTMLElement{
         }
 
         [data-koma='金']{
-            background-image: var(--金);
+            background-image: var(--kin);
         }
         [data-koma='金_']{
-            background-image: var(--金_);
+            background-image: var(--kin_);
         }
 
         [data-koma='角']{
@@ -622,26 +618,26 @@ class shogiBeya extends HTMLElement{
             background-size: 14px 14px;
             background-repeat: no-repeat;
         }
-        #btn-hajime{
-            background-image: var(--btn-hajime);
+        #btnHajime{
+            background-image: var(--btnHajime);
         }
-        #btn-maehe{
-            background-image: var(--btn-maehe);
+        #btnMaehe{
+            background-image: var(--btnMaehe);
         }
-        #btn-tsugihe{
-            background-image: var(--btn-tsugihe);
+        #btnTsugihe{
+            background-image: var(--btnTsugihe);
         }
-        #btn-owari{
-            background-image: var(--btn-owari);
+        #btnSaigohe{
+            background-image: var(--btnSaigohe);
         }
         #sashiteSentaku{
             margin: 0 8px;
         }
-        #ダイアログボタン{
-            background-image: var(--ダイアログボタン);
+        #btnDialog{
+            background-image: var(--btnDialog);
         }
-        #反転ボタン{
-            background-image: var(--反転ボタン);
+        #btnHanten{
+            background-image: var(--btnHanten);
         }
 
         #ダイアログ{
@@ -671,11 +667,11 @@ class shogiBeya extends HTMLElement{
             color: #fff;
             font-size: 16px;
         }
-        #ダイアログ_閉じるボタン{
+        #btnDialogClose{
             width: 20px;
             height: 20px;
             background-repeat: no-repeat;
-            background-image: var(--ダイアログ_閉じるボタン);
+            background-image: var(--btnDialogClose);
             background-size: 20px;
             cursor: pointer;
         }
@@ -683,7 +679,7 @@ class shogiBeya extends HTMLElement{
         #ダイアログ_コンテンツ{
             text-align: center;
         }
-        #ダイアログ_棋譜コピーボタン{ 
+        #btnCopyKifu{ 
             border-radius: 5px;
             padding: 15px 25px;
             font-size: 18px;
@@ -695,7 +691,7 @@ class shogiBeya extends HTMLElement{
             box-shadow: 0px 5px 0px 0px #3C93D5;
             cursor: pointer;
         }
-        #ダイアログ_棋譜コピーボタン:active {
+        #btnCopyKifu:active {
             transform: translate(0px, 5px);
             box-shadow: 0px 1px 0px 0px;
         }
@@ -705,10 +701,10 @@ class shogiBeya extends HTMLElement{
             padding: 2px 4px;
         }
 
-        #変化選択:empty{
+        #changeSelection:empty{
             display: none;
         }
-        #変化選択{
+        #changeSelection{
             position: relative;
             color: #fff;
             font-size: 16px;
@@ -722,15 +718,15 @@ class shogiBeya extends HTMLElement{
             margin-bottom: 0;
             padding: 0;
         }
-        #変化選択 > div{
+        #changeSelection > div{
             margin: 6px 6px 6px 16px;
             padding: 0;
         }
-        #変化選択 >div:hover{
+        #changeSelection >div:hover{
             color: yellow;
             cursor: pointer;
         }
-        #変化選択::after {
+        #changeSelection::after {
             content: "";
             position: absolute;
             top: -20px;
@@ -746,44 +742,44 @@ class shogiBeya extends HTMLElement{
         </style>
         <div id="shogiBeya">
           <div id="後手名"></div>
-          <div id="kyokumen-wrap">
-            <div id="komadai-gote">
-              <div id="komadai-gote_歩" data-num="0" data-koma="歩_"></div>
-              <div id="komadai-gote_香" data-num="0" data-koma="香_"></div>
-              <div id="komadai-gote_桂" data-num="0" data-koma="桂_"></div>
-              <div id="komadai-gote_銀" data-num="0" data-koma="銀_"></div>
-              <div id="komadai-gote_金" data-num="0" data-koma="金_"></div>
-              <div id="komadai-gote_角" data-num="0" data-koma="角_"></div>
-              <div id="komadai-gote_飛" data-num="0" data-koma="飛_"></div>
+          <div id="css-kyokumen">
+            <div id="komadaiGote">
+              <div id="komadaiGote-fu" data-num="0" data-koma="歩_"></div>
+              <div id="komadaiGote-kyo" data-num="0" data-koma="香_"></div>
+              <div id="komadaiGote-kei" data-num="0" data-koma="桂_"></div>
+              <div id="komadaiGote-gin" data-num="0" data-koma="銀_"></div>
+              <div id="komadaiGote-kin" data-num="0" data-koma="金_"></div>
+              <div id="komadaiGote-kaku" data-num="0" data-koma="角_"></div>
+              <div id="komadaiGote-hisha" data-num="0" data-koma="飛_"></div>
             </div>
-            <div id="shogiban"></div>
-            <div id="komadai-sente">
-              <div id="komadai-sente_飛" data-num="0" data-koma="飛"></div>
-              <div id="komadai-sente_角" data-num="0" data-koma="角"></div>
-              <div id="komadai-sente_金" data-num="0" data-koma="金"></div>
-              <div id="komadai-sente_銀" data-num="0" data-koma="銀"></div>
-              <div id="komadai-sente_桂" data-num="0" data-koma="桂"></div>
-              <div id="komadai-sente_香" data-num="0" data-koma="香"></div>
-              <div id="komadai-sente_歩" data-num="0" data-koma="歩"></div>
+            <div id="shogiBan"></div>
+            <div id="komadaiSente">
+              <div id="komadaiSente-hisha" data-num="0" data-koma="飛"></div>
+              <div id="komadaiSente-kaku" data-num="0" data-koma="角"></div>
+              <div id="komadaiSente-kin" data-num="0" data-koma="金"></div>
+              <div id="komadaiSente-gin" data-num="0" data-koma="銀"></div>
+              <div id="komadaiSente-kei" data-num="0" data-koma="桂"></div>
+              <div id="komadaiSente-kyo" data-num="0" data-koma="香"></div>
+              <div id="komadaiSente-fu" data-num="0" data-koma="歩"></div>
             </div>
           </div>
           <div id="先手名"></div>
           <div id="playController">
-            <div id="btn-hajime"></div>
-            <div id="btn-maehe"></div>
-            <div id="btn-tsugihe"><div id="変化選択"></div></div>
-            <div id="btn-owari"></div>
+            <div id="btnHajime"></div>
+            <div id="btnMaehe"></div>
+            <div id="btnTsugihe"><div id="changeSelection"></div></div>
+            <div id="btnSaigohe"></div>
             <select id="sashiteSentaku"></select>
-            <div id="ダイアログボタン"></div>
-            <div id="反転ボタン"></div>
+            <div id="btnDialog"></div>
+            <div id="btnHanten"></div>
           </div>
           <div id="ダイアログ">
             <div id="ダイアログ_ヘッダ">
               <div id="ダイアログ_タイトル">shogiBeya</div>
-              <div id="ダイアログ_閉じるボタン"></div>
+              <div id="btnDialogClose"></div>
             </div>
             <div id="ダイアログ_コンテンツ">
-              <div id="ダイアログ_棋譜コピーボタン">棋譜をコピーする</div>
+              <div id="btnCopyKifu">棋譜をコピーする</div>
               <div id="ダイアログ_フッタ"><a href="https://spelunker2.wordpress.com/2018/09/20/shogitime/" target="_blank">shogiBeya Ver1.4</a></div>
             </div>
           </div>
@@ -796,7 +792,7 @@ class shogiBeya extends HTMLElement{
 
 
 
-class shogiBeyaグラフ extends HTMLElement{
+class shogiBeyaGraph extends HTMLElement{
 
     connectedCallback(){
         this.$本体 = document.querySelector(`shogi-time[graph="${this.id}"]`)
@@ -1447,5 +1443,5 @@ function benry(self, attr = []){ // https://qiita.com/economist/items/6c923c255f
 }
 
 
-customElements.define('shogi-time-graph', shogiBeyaグラフ)
+customElements.define('shogi-time-graph', shogiBeyaGraph)
 customElements.define('shogi-time', shogiBeya)
