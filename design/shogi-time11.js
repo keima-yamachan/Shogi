@@ -208,7 +208,7 @@ class 将棋部屋 extends HTMLElement{
                     html += this.描画_駒(局面.駒[y][x], x, y, 反転)
                 }
                 else {
-                    return `<div class="マス"></div>`
+                    return `<div class="空マス">test1</div>`
                 }
             }
         }
@@ -224,7 +224,7 @@ class 将棋部屋 extends HTMLElement{
             駒 = 駒.includes('_') ? 駒.replace('_', '') : `${駒}_`
         }
 
-        return `<div class="マス"><div class="駒" data-koma="${駒}" data-x="${x}" data-y="${y}"></div></div>`
+        return `<div class="空マス"><div class="駒" data-koma="${駒}" data-x="${x}" data-y="${y}">test2</div></div>`
     }
 
 
