@@ -1,13 +1,13 @@
-#kyokumen{
+#playarea{
         margin-top: 20px;
 }
 
 #shogiban{
-            width: 600px;
-            height: 600px;
-            position: relative;
-            margin: 0 3px;
-            -webkit-tap-highlight-color: transparent;
-        }
-        :host([data-reverse]) #shogiban{
-        }
+        width: 600px !important;
+        height: 600px;
+        position: relative;
+        margin: 0 3px;
+        -webkit-tap-highlight-color: transparent;
+}
+:host([data-reverse]) #shogiban{
+}
