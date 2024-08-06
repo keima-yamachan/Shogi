@@ -982,7 +982,6 @@ class 将棋タイムグラフ extends HTMLElement{
 
 
 
-
 class 棋譜{
 
     static 解析(text = ''){
