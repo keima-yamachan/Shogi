@@ -237,7 +237,7 @@ class 将棋部屋 extends HTMLElement{
             y = 10 - y
         }
 
-        return `<div id="最終手" data-x="${x}" data-y="${y}"></div>`
+        return `<div class="空マス"><div id="最終手" data-x="${x}" data-y="${y}"></div></div>`
     }
 
 
